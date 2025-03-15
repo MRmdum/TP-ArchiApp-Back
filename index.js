@@ -10,9 +10,7 @@ app.use(function(req, res, next) {
 });
 
 app.get('/test/*', function(req, res) {
-  const message = unescape(req.url.split('/msg/post/')[1]);
-  allMsgs.push(message);
-  res.json({ code: 1, msgNumber: allMsgs.length - 1 });
+  res.send("found test");
 });
 
 // Messages storage
