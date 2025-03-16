@@ -10,7 +10,18 @@ app.use(function(req, res, next) {
 });
 
 app.get('/test/*', function(req, res) {
-  res.send("found test");
+
+  let input = req.url.substring(6);
+  let ex_return = { msg: param };
+  if (input === "json") {
+    ex_return = { a: 1, b: 2 };
+  } else if (input === "hello") {
+    ex_return = ["Hello", "World"];
+  } else if (input === "42") {
+    ex_return = 42;
+  }
+
+  res.json(ex_return);
 });
 
 // Messages storage
