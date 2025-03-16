@@ -9,8 +9,31 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.get('/test/*', function(req, res) {
+// Counter variable
+let counter = 0;
 
+// Counter query route
+app.get('/cpt/query', function(req, res) {
+  res.json({ value: counter });
+});
+
+// Counter increment route
+app.get('/cpt/inc', function(req, res) {
+  if (req.query.v) {
+    const value = parseInt(req.query.v);
+    if (!isNaN(value)) {
+      counter += value;
+      res.json({ code: 0 });
+    } else {
+      res.json({ code: -1 });
+    }
+  } else {
+    counter += 1;
+    res.json({ code: 0 });
+  }
+});
+
+app.get('/test/*', function(req, res) {
   let input = req.url.substring(6);
   let ex_return = { msg: param };
   if (input === "json") {
@@ -20,7 +43,6 @@ app.get('/test/*', function(req, res) {
   } else if (input === "42") {
     ex_return = 42;
   }
-
   res.json(ex_return);
 });
 
