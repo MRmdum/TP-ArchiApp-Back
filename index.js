@@ -83,6 +83,12 @@ app.get('/msg/nber', function(req, res) {
 });
 
 // Post new message
+app.get('/msg/post/*', function(req, res) {
+  const message = unescape(req.url.split('/msg/post/')[1]);
+  allMsgs.push(message);
+  res.json({ code: 1, msgNumber: allMsgs.length - 1 });
+});
+
 app.post('/msg/post', function(req, res) {
   const { text, pseudo } = req.body;
   const newMsg = {
