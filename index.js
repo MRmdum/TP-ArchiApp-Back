@@ -33,9 +33,14 @@ app.get('/cpt/inc', function(req, res) {
   }
 });
 
+app.get('/blah/*', function(req, res) {
+  console.log(req.query)
+});
+
 app.get('/test/*', function(req, res) {
+
   let input = req.url.substring(6);
-  let ex_return = { msg: param };
+  let ex_return = { msg: input };
   if (input === "json") {
     ex_return = { a: 1, b: 2 };
   } else if (input === "hello") {
