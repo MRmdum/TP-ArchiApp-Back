@@ -5,9 +5,13 @@ var app = express();
 // CORS headers
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+
+// Parse JSON bodies
+app.use(express.json());
 
 // Counter variable
 let counter = 0;
@@ -51,8 +55,12 @@ app.get('/test/*', function(req, res) {
   res.json(ex_return);
 });
 
-// Messages storage
-var allMsgs = ["Hello World", "foobar", "CentraleSupelec Forever"];
+// Messages storage with metadata
+var allMsgs = [
+  { text: "Hello World", date: new Date().toISOString(), pseudo: "system" },
+  { text: "foobar", date: new Date().toISOString(), pseudo: "system" },
+  { text: "CentraleSupelec Forever", date: new Date().toISOString(), pseudo: "system" }
+];
 
 // Get message by index
 app.get('/msg/get/:id', function(req, res) {
@@ -75,9 +83,14 @@ app.get('/msg/nber', function(req, res) {
 });
 
 // Post new message
-app.get('/msg/post/*', function(req, res) {
-  const message = unescape(req.url.split('/msg/post/')[1]);
-  allMsgs.push(message);
+app.post('/msg/post', function(req, res) {
+  const { text, pseudo } = req.body;
+  const newMsg = {
+    text,
+    pseudo,
+    date: new Date().toISOString()
+  };
+  allMsgs.push(newMsg);
   res.json({ code: 1, msgNumber: allMsgs.length - 1 });
 });
 
